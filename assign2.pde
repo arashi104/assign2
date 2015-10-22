@@ -49,6 +49,18 @@ void draw() {
     movex += speed;
   }
 
+if(movex > width){
+  movex = 0;
+}
+if(movex < 0){
+  movex = width;
+}
+if(movey>height){
+  movey = 0;
+}
+if(movey < 0){
+  movey = height;
+}
    image(bg1Img,y,0);
    image(bg2Img,z,0);
    image(fighterImg,movex,movey);
@@ -107,5 +119,5 @@ void keyReleased(){
         break;
     }
   }
-  
+
 }
