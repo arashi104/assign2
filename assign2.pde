@@ -1,90 +1,175 @@
-//You should implement your assign2 here.
-PImage fighterImg;
-PImage bg1Img;
-PImage bg2Img;
-PImage enemyImg;
-PImage hpImg;
-PImage treasureImg;
-int x,y,z;
-int a,b,c,hp;
-boolean isPlaying;
+final int GAME_START = 1;
+final int GAME_RUN = 2;
+final int GAME_LOSE = 3;
+
+//picture
+PImage fighterImg ;
+PImage bg1Img ;
+PImage bg2Img ;
+PImage start1IMG;
+PImage start2IMG;
+PImage end1Img;
+PImage end2Img;
+PImage hpImg ;
+PImage enemyImg ;
+PImage treasureImg ;
+int enemyX,enemyY;
+int backgroundX,backgroundY,backgroundZ;
+int hpX,hpY,blood;
+int speedX,speedY;
+int fighterX,fighterY;
+int x = floor(random(20,620)); //treasure x
+int y = floor(random(20,200)); //treasure y
+int gameStare;
 boolean upPressed = false;
 boolean downPressed = false;
 boolean leftPressed = false;
 boolean rightPressed = false;
-float speed = 5;
-float movex;
-float movey;
+
 void setup () {
   size(640,480) ;  // must use this size.
-    x=0;
-  fighterImg = loadImage("img/fighter.png");
-  bg1Img = loadImage("img/bg1.png");
-  bg2Img = loadImage("img/bg2.png");
-  enemyImg = loadImage("img/enemy.png");
-  hpImg = loadImage("img/hp.png");
-  treasureImg = loadImage("img/treasure.png");
+
+  //start
+  bg1Img=loadImage("img/bg1.png");
+  bg2Img=loadImage("img/bg2.png");
+  end1Img=loadImage("img/end2.png");
+  end2Img=loadImage("img/end1.png");
+  start1IMG=loadImage("img/start1.png");
+  start2IMG=loadImage("img/start2.png");
+  hpImg=loadImage("img/hp.png");
+  enemyImg=loadImage("img/enemy.png");
+  treasureImg=loadImage("img/treasure.png");
+  fighterImg=loadImage("img/fighter.png");
   
-  a = floor(random(10,600));
-  b = floor(random(10,450));
-  c = floor(random(10,450));
-  hp = floor(random(30,195));
-  movex = 580;
-  movey = height/2;
-  // your code
+  speedX = floor(random(2,5));
+  speedY = floor(random(-2,2));
+  backgroundX = 0;
+  fighterX = 610;
+  fighterY = 220;
+  enemyX = 20;
+  enemyY = floor(random(40,440));
+  hpX = 20;
+  hpY = 20;
+  blood = 69;
+  gameStare = GAME_START;
 }
+
 
 void draw() {
-
-  if (upPressed) {
-    movey -= speed;
+  //begin
+  switch(gameStare){
+    case GAME_START:
+  image(start1IMG,0,0);
+   if(mouseX>=200&&mouseX<=440&&mouseY>=380&&mouseY<=420){
+   image(start2IMG,0,0);
+   if(mousePressed){
+   gameStare=GAME_RUN;
+   }
   }
-  if (downPressed) {
-    movey += speed;
+  break;
+  case GAME_RUN:
+  image(bg1Img,backgroundX,0);
+  image(bg2Img,backgroundY,0);
+  fill(220,0,0);
+  rectMode(CORNERS);
+  rect(30,20,blood,40);
+  image(hpImg,hpX,hpY);
+  image(enemyImg,enemyX,enemyY);
+  image(treasureImg,x,y);
+  image(fighterImg,fighterX-20,fighterY-20);
+  if(x+40>=fighterX&&fighterX+40>=x){
+    if(y+40>=fighterY&&fighterY+40>=y){
+    x=floor(random(20,620));
+    y=floor(random(20,200));
+    blood+=19.5;
+    }
   }
-  if (leftPressed) {
-    movex -= speed;
+       if(enemyX+40>=fighterX&&fighterX+40>=enemyX){
+       if(enemyY+40>=fighterY&&fighterY+40>=enemyY){
+       speedX=floor(random(2,5));
+       speedY=floor(random(-2,2));
+       enemyX=20;
+       enemyY=floor(random(40,440));
+       blood-=39;
+       }
+    }
+    if(enemyX>680||enemyX<-40||enemyY<-40||enemyY>480){
+      
+      speedX=floor(random(2,5));
+      speedY=floor(random(-2,2));
+       enemyX=20;
+       enemyY=floor(random(40,440));
+    }
+  enemyX+=speedX;
+  enemyY+=speedY;
+  backgroundX++;
+  backgroundY=backgroundX-640;
+  backgroundZ=backgroundY-640;
+  backgroundX=backgroundX%1280;
+  if(enemyY>=fighterY&&enemyX>=120){
+    speedY=-2;
   }
-  if (rightPressed) {
-    movex += speed;
+  if(enemyY<=fighterY&&enemyX>=120){
+    speedY=2;
   }
-
-if(movex > width){
-  movex = 0;
-}
-if(movex < 0){
-  movex = width;
-}
-if(movey>height){
-  movey = 0;
-}
-if(movey < 0){
-  movey = height;
-}
-   image(bg1Img,y,0);
-   image(bg2Img,z,0);
-   image(fighterImg,movex,movey);
-   image(treasureImg,a,b);
-   image(enemyImg,x,c);
-   fill(255,0,0);
-   rect(35,25,hp,25);
-  image(hpImg,30,20);
-  if(isPlaying){
-   // your code
-x +=2;
-x%=650;
-y +=3;
-y%=640;
-z =y-640;
-movex%=650;
-movey%=640;
- if(x >= movex && c == movey){
-   isPlaying = false;
+ if(upPressed){
+   fighterY=fighterY-3;
  }
-}
-}
+ 
+ if(downPressed){
+   fighterY=fighterY+3;
+ }
+ 
+ if(rightPressed){
+   fighterX=fighterX+3;
+ }
+ 
+ if(leftPressed){
+   fighterX=fighterX-3;
+ }
+ if(fighterX>=610){
+   fighterX=610;
+ }
+ if(fighterX<=20){
+   fighterX=20;
+ }
+ if(fighterY<=20){
+   fighterY=20;
+ }
+ if(fighterY>=450){
+   fighterY=450;
+ }
+ if(blood>=225){
+ blood=225;
+ }
+ if(blood<=30){
+    gameStare=GAME_LOSE;
+  }
+  break;
+  case GAME_LOSE:
+    image(end1Img,0,0);
+   if(mouseX>=200&&mouseX<=440&&mouseY>=300&&mouseY<=360){
+   image(end2Img,0,0);
+   if(mousePressed){
+   gameStare=GAME_RUN;
+   fill(220,0,0);
+   blood=69;
+   rectMode(CORNERS);
+   rect(30,20,blood,40);
+   fighterX=610;
+   fighterY=220;
+   enemyX=20;
+   enemyY=floor(random(40,440));
+   x=floor(random(20,620));
+   y=floor(random(20,200));
+  
+     }
+    }
+    break;
+   }
+  }
+
 void keyPressed(){
-  isPlaying =true;
  if (key == CODED) { // detect special keys 
     switch (keyCode) {
       case UP:
@@ -99,11 +184,11 @@ void keyPressed(){
       case RIGHT:
         rightPressed = true;
         break;
-}
-}
+  }
+ }
 }
 void keyReleased(){
-   if (key == CODED) {
+ if (key == CODED) {
     switch (keyCode) {
       case UP:
         upPressed = false;
@@ -119,5 +204,4 @@ void keyReleased(){
         break;
     }
   }
-
 }
