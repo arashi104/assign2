@@ -6,6 +6,7 @@ final int GAME_LOSE = 3;
 PImage fighterImg ;
 PImage bg1Img ;
 PImage bg2Img ;
+PImage bg3Img;
 PImage start1IMG;
 PImage start2IMG;
 PImage end1Img;
@@ -32,6 +33,7 @@ void setup () {
   //start
   bg1Img=loadImage("img/bg1.png");
   bg2Img=loadImage("img/bg2.png");
+  bg3Img=loadImage("img/bg1.png");
   end1Img=loadImage("img/end2.png");
   end2Img=loadImage("img/end1.png");
   start1IMG=loadImage("img/start1.png");
@@ -41,7 +43,7 @@ void setup () {
   treasureImg=loadImage("img/treasure.png");
   fighterImg=loadImage("img/fighter.png");
   
-  speedX = floor(random(2,5));
+  speedX = floor(random(2,8));
   speedY = floor(random(-2,2));
   backgroundX = 0;
   fighterX = 610;
@@ -70,6 +72,7 @@ void draw() {
   case GAME_RUN:
   image(bg1Img,backgroundX,0);
   image(bg2Img,backgroundY,0);
+  image(bg3Img,backgroundZ,0);
   fill(220,0,0);
   rectMode(CORNERS);
   rect(30,20,blood,40);
@@ -86,7 +89,7 @@ void draw() {
   }
        if(enemyX+40>=fighterX&&fighterX+40>=enemyX){
        if(enemyY+40>=fighterY&&fighterY+40>=enemyY){
-       speedX=floor(random(2,5));
+       speedX=floor(random(2,8));
        speedY=floor(random(-2,2));
        enemyX=20;
        enemyY=floor(random(40,440));
@@ -95,7 +98,7 @@ void draw() {
     }
     if(enemyX>680||enemyX<-40||enemyY<-40||enemyY>480){
       
-      speedX=floor(random(2,5));
+      speedX=floor(random(2,8));
       speedY=floor(random(-2,2));
        enemyX=20;
        enemyY=floor(random(40,440));
